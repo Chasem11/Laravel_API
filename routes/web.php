@@ -23,3 +23,6 @@ Route::get('/rentals', 'App\Http\Controllers\Controller@getRentals');
 Route::get('/movies', 'App\Http\Controllers\Controller@getMovies');
 
 Route::get('/dueRentals', 'App\Http\Controllers\Controller@getDueRentals');
+
+Route::get('/displayUserView', 'App\Http\Controllers\Controller@displayUserView');
+Route::post('/createUser', 'App\Http\Controllers\Controller@createUser');
