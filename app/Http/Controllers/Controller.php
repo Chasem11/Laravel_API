@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Books;
 use App\Models\Rentals;
 use App\Models\Movies;
+use Carbon\Carbon;
 
 class Controller extends BaseController
 {
@@ -31,9 +32,10 @@ class Controller extends BaseController
         return response()->json($books);
     }
 
-    public function getRentals() 
+    public function getRentals(Request $request) 
     {
-        $rentals = Rentals::all();
+        $date = $request->input('date');
+        $rentals = Rentals::where('rental_date', '>=', Carbon::today()->subDays($date))->get();
 
         return response()->json($rentals);
     }
@@ -44,6 +46,7 @@ class Controller extends BaseController
 
         return response()->json($movies);
     }
+
 
     public function getDueRentals()
     {
