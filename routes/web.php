@@ -27,4 +27,7 @@ Route::get('/availableBooks', 'App\Http\Controllers\Controller@getAvailableBooks
 Route::get('/dueRentals', 'App\Http\Controllers\Controller@getDueRentals');
 
 Route::get('/displayUserView', 'App\Http\Controllers\Controller@displayUserView');
+Route::get('/displayHomeView', 'App\Http\Controllers\Controller@displayHomeView');
+Route::get('/displayBooksView', 'App\Http\Controllers\Controller@displayBookView');
+Route::get('/displayMoviesView', 'App\Http\Controllers\Controller@displayMovieView');
 Route::post('/createUser', 'App\Http\Controllers\Controller@createUser');

@@ -54,8 +54,8 @@ class Controller extends BaseController
         return response()->json($movies);
     }
 
-    public function getAvailableMovies(){
-
+    public function getAvailableMovies()
+    {
         $movies = Movies::where('availability', 0)->get('title');
 
         return response()->json($movies);
@@ -79,10 +79,6 @@ class Controller extends BaseController
         return response()->json($returnMessage);
     }
 
-    public function displayUserView()
-    {
-        return view('newUser');
-    }
 
     public function createUser(Request $request)
     {
@@ -108,8 +104,32 @@ class Controller extends BaseController
             'gender' => $request->input('gender')
         ]);
 
-        // Return a success response
         return response()->json('User created successfully!');
+    }
+
+    #functions to display views
+    public function displayUserView()
+    {
+        return view('newUser');
+    }
+
+    public function displayHomeView()
+    {
+        return view('index');
+    }
+
+    public function displayBookView()
+    {
+        $books = Books::where('availability', 0)->get();
+
+        return view('books', compact('books'));
+    }
+
+    public function displayMovieView()
+    {
+        $movies = Movies::where('availability', 0)->get();
+
+        return view('movies', compact('movies'));
     }
 }
 

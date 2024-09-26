@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Available Media</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Available Media</h1>
+
+    <div class="list-group">
+        <a href="{{ url('/displayBooksView') }}" class="list-group-item list-group-item-action">View Available Books</a>
+        <a href="{{ url('/displayMoviesView') }}" class="list-group-item list-group-item-action">View Available Movies</a>
+        <a href="{{ url('/displayUserView') }}" class="list-group-item list-group-item-action">Create New User</a> <!-- New User Link -->
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
