@@ -21,6 +21,8 @@ Route::get('/users', 'App\Http\Controllers\Controller@getUsers');
 Route::get('/books', 'App\Http\Controllers\Controller@getBooks');
 Route::get('/rentals', 'App\Http\Controllers\Controller@getRentals');
 Route::get('/movies', 'App\Http\Controllers\Controller@getMovies');
+Route::get('/availableMovies', 'App\Http\Controllers\Controller@getAvailableMovies');
+Route::get('/availableBooks', 'App\Http\Controllers\Controller@getAvailableBooks');
 
 Route::get('/dueRentals', 'App\Http\Controllers\Controller@getDueRentals');
 

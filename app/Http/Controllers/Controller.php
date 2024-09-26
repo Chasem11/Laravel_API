@@ -32,6 +32,13 @@ class Controller extends BaseController
         return response()->json($books);
     }
 
+    public function getAvailableBooks()
+    {
+        $books = Books::where('availability', 0)->get('title');
+
+        return response()->json($books);
+    }
+
     public function getRentals(Request $request) 
     {
         $date = $request->input('date');
@@ -43,6 +50,13 @@ class Controller extends BaseController
     public function getMovies()
     {
         $movies = Movies::all();
+
+        return response()->json($movies);
+    }
+
+    public function getAvailableMovies(){
+
+        $movies = Movies::where('availability', 0)->get('title');
 
         return response()->json($movies);
     }
