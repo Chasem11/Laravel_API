@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/displayUserView') }}">Create User</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/displayRentView') }}">Rent Item</a>
+                </li>
             </ul>
         </div>
     </div>

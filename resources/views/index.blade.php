@@ -14,7 +14,8 @@
     <div class="list-group">
         <a href="{{ url('/displayBooksView') }}" class="list-group-item list-group-item-action">View Available Books</a>
         <a href="{{ url('/displayMoviesView') }}" class="list-group-item list-group-item-action">View Available Movies</a>
-        <a href="{{ url('/displayUserView') }}" class="list-group-item list-group-item-action">Create New User</a> <!-- New User Link -->
+        <a href="{{ url('/displayUserView') }}" class="list-group-item list-group-item-action">Create New User</a> 
+        <a href="{{ url('/displayRentView') }}" class="list-group-item list-group-item-action">Rent Item</a> 
     </div>
 </div>
 

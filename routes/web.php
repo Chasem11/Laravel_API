@@ -30,4 +30,7 @@ Route::get('/displayUserView', 'App\Http\Controllers\Controller@displayUserView'
 Route::get('/displayHomeView', 'App\Http\Controllers\Controller@displayHomeView');
 Route::get('/displayBooksView', 'App\Http\Controllers\Controller@displayBookView');
 Route::get('/displayMoviesView', 'App\Http\Controllers\Controller@displayMovieView');
+Route::get('/displayRentView', 'App\Http\Controllers\Controller@displayRentView');
+
 Route::post('/createUser', 'App\Http\Controllers\Controller@createUser');
+Route::post('/rentItem', 'App\Http\Controllers\Controller@rentItem');

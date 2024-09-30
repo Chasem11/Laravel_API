@@ -12,6 +12,9 @@ use App\Models\Books;
 use App\Models\Rentals;
 use App\Models\Movies;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class Controller extends BaseController
 {
@@ -34,7 +37,7 @@ class Controller extends BaseController
 
     public function getAvailableBooks()
     {
-        $books = Books::where('availability', 0)->get('title');
+        $books = Books::where('availability', 1)->get('title');
 
         return response()->json($books);
     }
@@ -56,7 +59,7 @@ class Controller extends BaseController
 
     public function getAvailableMovies()
     {
-        $movies = Movies::where('availability', 0)->get('title');
+        $movies = Movies::where('availability', 1)->get('title');
 
         return response()->json($movies);
     }
@@ -107,6 +110,33 @@ class Controller extends BaseController
         return response()->json('User created successfully!');
     }
 
+    #Rent a book or movie
+    public function rentItem(Request $request) 
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+            'item_type' => 'required',
+            'book_id' => 'nullable|exists:books,item_id',
+            'movie_id' => 'nullable|exists:movies,item_id',
+        ]);
+
+        try {
+            $book_id = $request->item_type === 'book' ? $request->book_id : null;
+            $movie_id = $request->item_type === 'movie' ? $request->movie_id : null;
+
+            DB::statement('CALL rentItem(?, ?, ?)', [
+                $request->user_id,
+                $book_id,
+                $movie_id
+            ]);
+
+            return redirect('/displayRentView')->with('success', 'Item rented successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error renting item: ' . $e->getMessage());
+            return redirect('/displayRentView')->with('error', $e->getMessage());
+        }
+    }
+
     #functions to display views
     public function displayUserView()
     {
@@ -120,16 +150,25 @@ class Controller extends BaseController
 
     public function displayBookView()
     {
-        $books = Books::where('availability', 0)->get();
+        $books = Books::where('availability', 1)->get();
 
         return view('books', compact('books'));
     }
 
     public function displayMovieView()
     {
-        $movies = Movies::where('availability', 0)->get();
+        $movies = Movies::where('availability', 1)->get();
 
         return view('movies', compact('movies'));
+    }
+
+    public function displayRentView()
+    {
+        $users = User::all();
+        $books = Books::where('availability', 1)->get();
+        $movies = Movies::where('availability', 1)->get();
+
+        return view('rentItem', compact('users', 'books', 'movies'));
     }
 }
 
