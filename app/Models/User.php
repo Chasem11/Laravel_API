@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasFactory;
     
+    protected $primaryKey = 'user_id';
+    
     public $timestamps = false;
     /**
      * The attributes that are mass assignable.
@@ -29,5 +31,9 @@ class User extends Authenticatable
         'gender'
     ];
 
+    public function rentals()
+    {
+        return $this->hasMany(Rentals::class, 'renter_id', 'user_id');
+    }
     
 }

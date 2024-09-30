@@ -121,6 +121,23 @@ class Controller extends BaseController
         ]);
 
         try {
+            $user = User::findOrFail($request->user_id);
+            $currentRentals = Rentals::where('renter_id', $request->user_id)
+                                    ->where('returned', false) // Make sure this matches how you're tracking returned rentals
+                                    ->count();
+        
+            // Log current rentals for debugging
+            Log::info('Current rentals count: ', ['user_id' => $request->user_id, 'current_rentals' => $currentRentals]);
+        
+            // Check rental limits based on user type
+            if (strtolower($user->user_type) === 'student' && $currentRentals >= 2) {
+                return redirect('/displayRentView')->with('error', 'Students can only rent up to 2 items.');
+            }
+        
+            if (strtolower($user->user_type) === 'teacher' && $currentRentals >= 3) {
+                return redirect('/displayRentView')->with('error', 'Teachers can only rent up to 3 items.');
+            }
+
             $book_id = $request->item_type === 'book' ? $request->book_id : null;
             $movie_id = $request->item_type === 'movie' ? $request->movie_id : null;
 
@@ -186,9 +203,12 @@ class Controller extends BaseController
 
     public function displayRentView()
     {
-        $users = User::all();
         $books = Books::where('availability', 1)->get();
         $movies = Movies::where('availability', 1)->get();
+
+        $users = User::withCount(['rentals' => function ($query) {
+            $query->where('returned', false);
+        }])->get();
 
         return view('rentItem', compact('users', 'books', 'movies'));
     }

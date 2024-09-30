@@ -19,13 +19,30 @@
                     <form action="/rentItem" method="POST">
                         @csrf
 
-                        <!-- User Select -->
-                        <div class="mb-3">
+                         <!-- Alert Section for Success/Error Messages -->
+                        @if(session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+                       <!-- User Select -->
+                       <div class="mb-3">
                             <label for="user_id" class="form-label">User</label>
                             <select name="user_id" id="user_id" class="form-select" required>
                                 <option value="" disabled selected>Select a user</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->user_id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
+                                    <option value="{{ $user->user_id }}">
+                                        {{ $user->first_name }} {{ $user->last_name }} 
+                                        ({{ ucfirst($user->user_type) }} - {{ $user->rentals_count }} items rented)
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
