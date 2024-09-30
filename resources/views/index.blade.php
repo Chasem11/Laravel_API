@@ -16,6 +16,7 @@
         <a href="{{ url('/displayMoviesView') }}" class="list-group-item list-group-item-action">View Available Movies</a>
         <a href="{{ url('/displayUserView') }}" class="list-group-item list-group-item-action">Create New User</a> 
         <a href="{{ url('/displayRentView') }}" class="list-group-item list-group-item-action">Rent Item</a> 
+        <a href="{{ url('/displayReturnView') }}" class="list-group-item list-group-item-action">Return Item</a> 
     </div>
 </div>
 

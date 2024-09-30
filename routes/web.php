@@ -31,6 +31,8 @@ Route::get('/displayHomeView', 'App\Http\Controllers\Controller@displayHomeView'
 Route::get('/displayBooksView', 'App\Http\Controllers\Controller@displayBookView');
 Route::get('/displayMoviesView', 'App\Http\Controllers\Controller@displayMovieView');
 Route::get('/displayRentView', 'App\Http\Controllers\Controller@displayRentView');
+Route::get('/displayReturnView', 'App\Http\Controllers\Controller@displayReturnView');
 
 Route::post('/createUser', 'App\Http\Controllers\Controller@createUser');
 Route::post('/rentItem', 'App\Http\Controllers\Controller@rentItem');
+Route::post('/returnItem', 'App\Http\Controllers\Controller@returnItem');

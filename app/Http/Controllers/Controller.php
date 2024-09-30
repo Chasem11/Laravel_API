@@ -137,6 +137,28 @@ class Controller extends BaseController
         }
     }
 
+    #Return a book or movie
+    public function returnItem(Request $request)
+    {
+        // Validate the request input
+        $request->validate([
+            'rental_id' => 'required|exists:rentals,rental_id',
+        ]);
+
+        try {
+            // Call the stored procedure to handle the return
+            DB::statement('CALL returnItem(?)', [$request->rental_id]);
+
+            // Redirect back to the return view with success message
+            return redirect('displayReturnView')->with('success', 'Item returned successfully!');
+        } catch (\Exception $e) {
+            // Log the error and redirect with an error message
+            Log::error('Error returning item: ' . $e->getMessage());
+            return redirect('displayReturnView')->with('error', 'Error returning item: ' . $e->getMessage());
+        }
+    }
+
+
     #functions to display views
     public function displayUserView()
     {
@@ -169,6 +191,15 @@ class Controller extends BaseController
         $movies = Movies::where('availability', 1)->get();
 
         return view('rentItem', compact('users', 'books', 'movies'));
+    }
+
+    public function displayReturnView()
+    {
+        $rentals = Rentals::where('returned', 0)
+            ->with(['user', 'books', 'movies'])
+            ->get();
+
+        return view('returnItem', compact('rentals'));
     }
 }
 
