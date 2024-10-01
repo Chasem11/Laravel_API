@@ -1,0 +1,647 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Media Library API",
+        "description": "API for managing book and movie rentals",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "operationId": "b1418caa939819fbdccf258771597fa8",
+                "responses": {
+                    "200": {
+                        "description": "A list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/books": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get all books",
+                "operationId": "116b1c16684cfb1ae4c4b53e262acc0e",
+                "responses": {
+                    "200": {
+                        "description": "A list of books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/availableBooks": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get available books",
+                "operationId": "a793ae7e335aacc7e46898208ec36153",
+                "responses": {
+                    "200": {
+                        "description": "A list of available books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getRentals": {
+            "post": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Get rentals by date",
+                "operationId": "8a22d1a11039781c2ba5ef8365578e66",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Number of days to filter rentals",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of rentals",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Rental"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movies": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Get all movies",
+                "operationId": "3e9d23dbaf02043e255cd87be80b06ef",
+                "responses": {
+                    "200": {
+                        "description": "A list of movies",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Movie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/availableMovies": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Get available movies",
+                "operationId": "322a67361505d7118c30616701c9b6d8",
+                "responses": {
+                    "200": {
+                        "description": "A list of available movies",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Movie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dueRentals": {
+            "get": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Get due rentals",
+                "operationId": "bd5b19d4df4bb00bdc33d3a434bc04ee",
+                "responses": {
+                    "200": {
+                        "description": "A list of due rentals",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Rental"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createUser": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user",
+                "operationId": "91bb49006fe122575810ade6bfe22a18",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "description": "First name of the user",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "Last name of the user",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email of the user",
+                                        "type": "string"
+                                    },
+                                    "user_type": {
+                                        "description": "Type of user (student or teacher)",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "description": "Gender of the user",
+                                        "type": "string"
+                                    },
+                                    "grade_level": {
+                                        "description": "Grade level of the user (if student)",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "department": {
+                                        "description": "Department of the user (if teacher)",
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User created successfully!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/rentItem": {
+            "post": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Rent a book or movie",
+                "description": "Allows a user to rent a book or movie based on their user type and the current rental limit",
+                "operationId": "3b6bdc98e619a47bb84651f83e636d03",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "description": "ID of the user",
+                                        "type": "integer"
+                                    },
+                                    "item_type": {
+                                        "description": "The type of item to rent",
+                                        "type": "string",
+                                        "enum": [
+                                            "book",
+                                            "movie"
+                                        ]
+                                    },
+                                    "book_id": {
+                                        "description": "ID of the book (if book is selected)",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "movie_id": {
+                                        "description": "ID of the movie (if movie is selected)",
+                                        "type": "integer",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item rented successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Item rented successfully!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, validation error"
+                    }
+                }
+            }
+        },
+        "/returnItem": {
+            "post": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Return a rented book or movie",
+                "operationId": "f33fa9c30c27b33ba5c856067b12050f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "rental_id": {
+                                        "description": "Rental ID to return",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Item returned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Item returned successfully!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, validation error"
+                    }
+                }
+            }
+        },
+        "/displayUserView": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the new user creation form",
+                "operationId": "189c03d2cfc088013cff8e596cb5e211",
+                "responses": {
+                    "200": {
+                        "description": "Returns the new user form view"
+                    }
+                }
+            }
+        },
+        "/displayHomeView": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the home page",
+                "operationId": "8e72fdf43544b72956c0f57b8baeb818",
+                "responses": {
+                    "200": {
+                        "description": "Returns the home page view"
+                    }
+                }
+            }
+        },
+        "/displayBooksView": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the available books",
+                "operationId": "e6ca52d18cca6541673e5b96aae7fccf",
+                "responses": {
+                    "200": {
+                        "description": "Returns the view with available books"
+                    }
+                }
+            }
+        },
+        "/displayMoviesView": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the available movies",
+                "operationId": "bd4bbd1c3af9fc713ccd6cbf7507e4fd",
+                "responses": {
+                    "200": {
+                        "description": "Returns the view with available movies"
+                    }
+                }
+            }
+        },
+        "/displayRentItem": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the rent item view",
+                "operationId": "f1e1a8481de0ecbded7afa1fa9b1cf95",
+                "responses": {
+                    "200": {
+                        "description": "Returns the view to rent a book or movie"
+                    }
+                }
+            }
+        },
+        "/displayReturnItem": {
+            "get": {
+                "tags": [
+                    "Views"
+                ],
+                "summary": "Display the return item view",
+                "operationId": "f795c2951f550a6579b708ce10eb991d",
+                "responses": {
+                    "200": {
+                        "description": "Returns the view to return a rented book or movie"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Book": {
+                "title": "Book",
+                "description": "Book model",
+                "properties": {
+                    "item_id": {
+                        "description": "Unique identifier for the book",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "Title of the book",
+                        "type": "string"
+                    },
+                    "author": {
+                        "description": "Author of the book",
+                        "type": "string"
+                    },
+                    "publication_year": {
+                        "description": "Year the book was published",
+                        "type": "integer"
+                    },
+                    "genre": {
+                        "description": "Genre of the book",
+                        "type": "string"
+                    },
+                    "availability": {
+                        "description": "Availability status of the book (true if available, false if rented)",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "Movie": {
+                "title": "Movie",
+                "description": "Movie model",
+                "properties": {
+                    "item_id": {
+                        "description": "Unique identifier for the movie",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "Title of the movie",
+                        "type": "string"
+                    },
+                    "director": {
+                        "description": "Director of the movie",
+                        "type": "string"
+                    },
+                    "publication_year": {
+                        "description": "Year the movie was published",
+                        "type": "integer"
+                    },
+                    "genre": {
+                        "description": "Genre of the movie",
+                        "type": "string"
+                    },
+                    "availability": {
+                        "description": "Availability status of the movie (true if available, false if rented)",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "Rental": {
+                "title": "Rental",
+                "description": "Rental model",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the rental",
+                        "type": "integer"
+                    },
+                    "renter_id": {
+                        "description": "The ID of the user who rented the item",
+                        "type": "integer"
+                    },
+                    "rental_date": {
+                        "description": "The date the item was rented",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "return_date": {
+                        "description": "The date the item was returned",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "returned": {
+                        "description": "Status of whether the item has been returned",
+                        "type": "boolean"
+                    },
+                    "book_id": {
+                        "description": "ID of the rented book, null if a movie is rented",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "movie_id": {
+                        "description": "ID of the rented movie, null if a book is rented",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "movies": {
+                        "$ref": "#/components/schemas/Movie"
+                    },
+                    "books": {
+                        "$ref": "#/components/schemas/Book"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "user_id": {
+                        "description": "Unique identifier for the user",
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "description": "First name of the user",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "description": "Last name of the user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email address of the user",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "user_type": {
+                        "description": "Type of user, either 'student' or 'teacher'",
+                        "type": "string"
+                    },
+                    "grade_level": {
+                        "description": "Grade level of the user (applicable if the user is a student)",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "department": {
+                        "description": "Department of the user (applicable if the user is a teacher)",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "gender": {
+                        "description": "Gender of the user",
+                        "type": "string"
+                    },
+                    "rentals": {
+                        "description": "List of rentals associated with the user",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Rental"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Books",
+            "description": "Books"
+        },
+        {
+            "name": "Rentals",
+            "description": "Rentals"
+        },
+        {
+            "name": "Movies",
+            "description": "Movies"
+        },
+        {
+            "name": "Views",
+            "description": "Views"
+        }
+    ]
+}

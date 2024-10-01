@@ -17,22 +17,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/users', 'App\Http\Controllers\Controller@getUsers');
-Route::get('/books', 'App\Http\Controllers\Controller@getBooks');
-Route::get('/rentals', 'App\Http\Controllers\Controller@getRentals');
-Route::get('/movies', 'App\Http\Controllers\Controller@getMovies');
-Route::get('/availableMovies', 'App\Http\Controllers\Controller@getAvailableMovies');
-Route::get('/availableBooks', 'App\Http\Controllers\Controller@getAvailableBooks');
+Route::get('/users', 'App\Http\Controllers\GetRoutesController@getUsers');
+Route::get('/books', 'App\Http\Controllers\GetRoutesController@getBooks');
+Route::get('/rentals', 'App\Http\Controllers\GetRoutesController@getRentals');
+Route::get('/movies', 'App\Http\Controllers\GetRoutesController@getMovies');
+Route::get('/availableMovies', 'App\Http\Controllers\GetRoutesController@getAvailableMovies');
+Route::get('/availableBooks', 'App\Http\Controllers\GetRoutesController@getAvailableBooks');
+Route::get('/dueRentals', 'App\Http\Controllers\GetRoutesController@getDueRentals');
 
-Route::get('/dueRentals', 'App\Http\Controllers\Controller@getDueRentals');
+Route::get('/displayUserView', 'App\Http\Controllers\ViewController@displayUserView');
+Route::get('/displayHomeView', 'App\Http\Controllers\ViewController@displayHomeView');
+Route::get('/displayBooksView', 'App\Http\Controllers\ViewController@displayBookView');
+Route::get('/displayMoviesView', 'App\Http\Controllers\ViewController@displayMovieView');
+Route::get('/displayRentView', 'App\Http\Controllers\ViewController@displayRentView');
+Route::get('/displayReturnView', 'App\Http\Controllers\ViewController@displayReturnView');
 
-Route::get('/displayUserView', 'App\Http\Controllers\Controller@displayUserView');
-Route::get('/displayHomeView', 'App\Http\Controllers\Controller@displayHomeView');
-Route::get('/displayBooksView', 'App\Http\Controllers\Controller@displayBookView');
-Route::get('/displayMoviesView', 'App\Http\Controllers\Controller@displayMovieView');
-Route::get('/displayRentView', 'App\Http\Controllers\Controller@displayRentView');
-Route::get('/displayReturnView', 'App\Http\Controllers\Controller@displayReturnView');
-
-Route::post('/createUser', 'App\Http\Controllers\Controller@createUser');
-Route::post('/rentItem', 'App\Http\Controllers\Controller@rentItem');
-Route::post('/returnItem', 'App\Http\Controllers\Controller@returnItem');
+Route::post('/createUser', 'App\Http\Controllers\GetRoutesController@createUser');
+Route::post('/rentItem', 'App\Http\Controllers\ItemController@rentItem');
+Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');
