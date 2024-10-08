@@ -35,3 +35,8 @@ Route::get('/displayReturnView', 'App\Http\Controllers\ViewController@displayRet
 Route::post('/createUser', 'App\Http\Controllers\GetRoutesController@createUser');
 Route::post('/rentItem', 'App\Http\Controllers\ItemController@rentItem');
 Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');
+
+Route::post('/chatbot', 'App\Http\Controllers\ChatBotController@chatbot');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

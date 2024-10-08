@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * @OA\Schema(
@@ -86,9 +87,23 @@ class User extends Authenticatable
         'user_type',
         'grade_level',
         'department',
-        'gender'
+        'gender',
+        'password'
     ];
 
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    protected function password()
+    {
+        return new Attribute(
+            null,
+            function ($value) {
+                return bcrypt($value);
+            }
+        );
+    }
 
     public function rentals()
     {
