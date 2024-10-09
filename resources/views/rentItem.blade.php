@@ -19,7 +19,7 @@
                     <form action="/rentItem" method="POST">
                         @csrf
 
-                         <!-- Alert Section for Success/Error Messages -->
+                        <!-- Alert Section for Success/Error Messages -->
                         @if(session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ session('error') }}
@@ -33,18 +33,14 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
-                       <!-- User Select -->
-                       <div class="mb-3">
-                            <label for="user_id" class="form-label">User</label>
-                            <select name="user_id" id="user_id" class="form-select" required>
-                                <option value="" disabled selected>Select a user</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->user_id }}">
-                                        {{ $user->first_name }} {{ $user->last_name }} 
-                                        ({{ ucfirst($user->user_type) }} - {{ $user->rentals_count }} items rented)
-                                    </option>
-                                @endforeach
-                            </select>
+                       
+                        <!-- Hidden User ID Field for Logged-in User -->
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
+
+                        <!-- Display User Name -->
+                        <div class="mb-3">
+                            <label class="form-label">Logged in as:</label>
+                            <p class="form-control-plaintext">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
                         </div>
 
                         <!-- Item Type Select -->
@@ -106,3 +102,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

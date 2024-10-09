@@ -181,6 +181,7 @@ class GetRoutesController extends Controller
      *             @OA\Property(property="first_name", type="string", description="First name of the user"),
      *             @OA\Property(property="last_name", type="string", description="Last name of the user"),
      *             @OA\Property(property="email", type="string", description="Email of the user"),
+     *             @OA\Property(property="password", type="string", description="Password of the user"),
      *             @OA\Property(property="user_type", type="string", description="Type of user (student or teacher)"),
      *             @OA\Property(property="gender", type="string", description="Gender of the user"),
      *             @OA\Property(property="grade_level", type="string", nullable=true, description="Grade level of the user (if student)"),
@@ -202,29 +203,75 @@ class GetRoutesController extends Controller
      */
     public function createUser(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
             'user_type' => 'required|string',
             'gender' => 'required|string',
             'grade_level' => 'nullable|in:9,10,11,12|required_if:user_type,student',
             'department' => 'nullable|string|max:255|required_if:user_type,teacher',
         ]);
 
-        // Create the new user
+        // Create the new user with hashed password
         User::create([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
             'user_type' => $request->input('user_type'),
             'grade_level' => $request->input('user_type') === 'student' ? $request->input('grade_level') : null,
             'department' => $request->input('user_type') === 'teacher' ? $request->input('department') : null,
             'gender' => $request->input('gender')
         ]);
 
-        return response()->json('User created successfully!');
+        return redirect('login')->with('success', 'Account created successfully! Please log in.');
+    }
+
+
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     summary="User login",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", description="Email of the user"),
+     *             @OA\Property(property="password", type="string", description="Password of the user")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string", example="your_jwt_token_here"),
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid login credentials"
+     *     )
+     * )
+     */
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Invalid login credentials'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('API Token')->plainTextToken;
+
+        return response()->json(['token' => $token, 'user' => $user], 200);
     }
 }
 

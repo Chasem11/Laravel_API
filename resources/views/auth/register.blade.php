@@ -7,7 +7,6 @@
     <title>Register</title>
 </head>
 <body>
-@include('navbar') <!-- Include your navbar if needed -->
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -17,7 +16,7 @@
                     <h4 class="mb-0">{{ __('Register') }}</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="/createUser">
                         @csrf
 
                         <!-- First Name Field -->

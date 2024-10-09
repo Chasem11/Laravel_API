@@ -19,10 +19,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "user_id": {
-                                        "description": "User's ID",
-                                        "type": "integer"
-                                    },
                                     "message": {
                                         "description": "User's message to the chatbot",
                                         "type": "string"
@@ -251,6 +247,10 @@
                                         "description": "Email of the user",
                                         "type": "string"
                                     },
+                                    "password": {
+                                        "description": "Password of the user",
+                                        "type": "string"
+                                    },
                                     "user_type": {
                                         "description": "Type of user (student or teacher)",
                                         "type": "string"
@@ -294,6 +294,59 @@
                     },
                     "400": {
                         "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "operationId": "2c99028953aa155c0c0bd6aa03bbcd2d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email of the user",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Password of the user",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "your_jwt_token_here"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid login credentials"
                     }
                 }
             }
@@ -411,34 +464,6 @@
                     },
                     "400": {
                         "description": "Bad request, validation error"
-                    }
-                }
-            }
-        },
-        "/displayUserView": {
-            "get": {
-                "tags": [
-                    "Views"
-                ],
-                "summary": "Display the new user creation form",
-                "operationId": "189c03d2cfc088013cff8e596cb5e211",
-                "responses": {
-                    "200": {
-                        "description": "Returns the new user form view"
-                    }
-                }
-            }
-        },
-        "/displayHomeView": {
-            "get": {
-                "tags": [
-                    "Views"
-                ],
-                "summary": "Display the home page",
-                "operationId": "8e72fdf43544b72956c0f57b8baeb818",
-                "responses": {
-                    "200": {
-                        "description": "Returns the home page view"
                     }
                 }
             }
@@ -683,6 +708,10 @@
         {
             "name": "Movies",
             "description": "Movies"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
         },
         {
             "name": "Views",

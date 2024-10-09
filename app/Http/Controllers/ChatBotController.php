@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Rentals;
 use App\Models\Books;
 use App\Models\Movies;
-use Carbon\Carbon;
 
 class ChatBotController extends Controller
 {
@@ -19,7 +18,6 @@ class ChatBotController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="user_id", type="integer", description="User's ID"),
      *             @OA\Property(property="message", type="string", description="User's message to the chatbot")
      *         )
      *     ),
@@ -32,30 +30,31 @@ class ChatBotController extends Controller
      */
     public function chatbot(Request $request)
     {
-        $userId = $request->input('user_id');
+        $user = Auth::user();
         $message = strtolower($request->input('message'));
 
-        // Check for keywords in the message
-        if (strpos($message, 'due rentals') !== false || strpos($message, 'overdue') !== false) {
-            return $this->getDueRentals($userId);
-        } elseif (strpos($message, 'available books') !== false) {
+        if ($this->containsAny($message, ['due', 'rentals', 'overdue'])) {
+            return $this->getDueRentals($user->user_id);
+        } elseif ($this->containsAny($message, ['available books'])) {
             return $this->getAvailableBooks();
-        } elseif (strpos($message, 'available movies') !== false) {
+        } elseif ($this->containsAny($message, ['available movies'])) {
             return $this->getAvailableMovies();
+        } elseif ($this->containsAny($message, ['available', 'to rent'])) {
+            return $this->checkAvailabilityByTitle($message);
         } else {
-            return response()->json("I'm sorry, I can only help you with due rentals and available books or movies.", 200);
+            return response()->json(['response' => "I'm here to assist with questions about due rentals, available books, available movies, or specific item availability."], 200);
         }
     }
 
     private function getDueRentals($userId)
     {
         $dueRentals = Rentals::where('renter_id', $userId)
-                             ->where('returned', 0)
+                             ->where('returned', false)
                              ->with(['books', 'movies'])
                              ->get();
 
         if ($dueRentals->isEmpty()) {
-            return response()->json("You have no due rentals.", 200);
+            return response()->json(['response' => "You have no due rentals."], 200);
         }
 
         $dueItems = [];
@@ -67,7 +66,7 @@ class ChatBotController extends Controller
             }
         }
 
-        return response()->json("You have due rentals: " . implode(', ', $dueItems), 200);
+        return response()->json(['response' => "You have due rentals: " . implode(', ', $dueItems)], 200);
     }
 
     private function getAvailableBooks()
@@ -75,10 +74,10 @@ class ChatBotController extends Controller
         $availableBooks = Books::where('availability', 1)->pluck('title')->toArray();
 
         if (empty($availableBooks)) {
-            return response()->json("No books are currently available.", 200);
+            return response()->json(['response' => "No books are currently available."], 200);
         }
 
-        return response()->json("Available books: " . implode(', ', $availableBooks), 200);
+        return response()->json(['response' => "Available books: " . implode(', ', $availableBooks)], 200);
     }
 
     private function getAvailableMovies()
@@ -86,22 +85,41 @@ class ChatBotController extends Controller
         $availableMovies = Movies::where('availability', 1)->pluck('title')->toArray();
 
         if (empty($availableMovies)) {
-            return response()->json("No movies are currently available.", 200);
+            return response()->json(['response' => "No movies are currently available."], 200);
         }
 
-        return response()->json("Available movies: " . implode(', ', $availableMovies), 200);
+        return response()->json(['response' => "Available movies: " . implode(', ', $availableMovies)], 200);
     }
 
-    private function processWithOpenAI($message)
+    private function checkAvailabilityByTitle($message)
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
-        ])->post('https://api.openai.com/v1/completions', [
-            'model' => 'text-davinci-003',
-            'prompt' => "The user asked: \"$message\". Respond with relevant information about due rentals and available items.",
-            'max_tokens' => 50,
-        ]);
+        // Extract potential title from the message
+        $title = str_replace(['is', 'available', 'to rent', '?'], '', $message);
+        $title = trim($title);
 
-        return trim($response->json()['choices'][0]['text']);
+        // Check in movies
+        $movie = Movies::where('title', 'like', '%' . $title . '%')->where('availability', 1)->first();
+        if ($movie) {
+            return response()->json(['response' => "Yes, the movie '$movie->title' is available to rent."], 200);
+        }
+
+        // Check in books
+        $book = Books::where('title', 'like', '%' . $title . '%')->where('availability', 1)->first();
+        if ($book) {
+            return response()->json(['response' => "Yes, the book '$book->title' is available to rent."], 200);
+        }
+
+        return response()->json(['response' => "Sorry, '$title' is not available to rent at this time."], 200);
+    }
+
+    private function containsAny($message, $keywords)
+    {
+        foreach ($keywords as $keyword) {
+            if (strpos($message, $keyword) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 }
+

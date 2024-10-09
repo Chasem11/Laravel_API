@@ -7,7 +7,6 @@
     <title>Login</title>
 </head>
 <body>
-    @include('navbar') <!-- Include the navbar if it’s in your layout -->
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -17,7 +16,7 @@
                         <h4 class="mb-0">Login</h4>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="/login">
                             @csrf
 
                             <!-- Email Field -->

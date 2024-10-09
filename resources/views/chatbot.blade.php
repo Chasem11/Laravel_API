@@ -1,22 +1,15 @@
-<!-- chatbot.blade.php -->
-<div class="modal fade" id="chatbotModal" tabindex="-1" aria-labelledby="chatbotModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="chatbotModalLabel">Chatbot Assistant</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="chatbotForm" onsubmit="sendMessage(); return false;">
-                    <div class="mb-3">
-                        <label for="userMessage" class="form-label">Ask a Question</label>
-                        <input type="text" id="userMessage" class="form-control" placeholder="Ask about due rentals or available items" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Send</button>
-                </form>
-                <div id="chatbotResponse" class="mt-3 p-2 border rounded" style="background-color: #f8f9fa;"></div>
-            </div>
+<div class="chatbot-container">
+    <form id="chatbotForm" onsubmit="sendMessage(); return false;">
+        <div class="mb-3">
+            <label for="userMessage" class="form-label">Ask a Question</label>
+            <input type="text" id="userMessage" class="form-control" placeholder="Ask about due rentals or available items" required>
         </div>
+        <button type="submit" class="btn btn-primary w-100">Send</button>
+    </form>
+
+    <!-- Chatbot response area with defined max height and scrollable overflow -->
+    <div id="chatbotResponse" class="mt-3 p-2 border rounded" style="background-color: #f8f9fa; max-height: 250px; overflow-y: auto;">
+        <!-- Chatbot responses will appear here -->
     </div>
 </div>
 
@@ -35,11 +28,11 @@
         })
         .then(response => response.json())
         .then(data => {
-            responseDiv.innerHTML = `<p><strong>Bot:</strong> ${data.response}</p>`;
+            responseDiv.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
             document.getElementById('userMessage').value = '';  // Clear the input
         })
         .catch(error => {
-            responseDiv.innerHTML = `<p class="text-danger">There was an error: ${error}</p>`;
+            responseDiv.innerHTML += `<p class="text-danger">There was an error: ${error.message}</p>`;
         });
     }
 </script>

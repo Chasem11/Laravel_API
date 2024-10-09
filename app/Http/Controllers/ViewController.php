@@ -14,41 +14,10 @@ use App\Models\Movies;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class ViewController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/displayUserView",
-     *     summary="Display the new user creation form",
-     *     tags={"Views"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Returns the new user form view"
-     *     )
-     * )
-     */
-    public function displayUserView()
-    {
-        return view('newUser');
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/displayHomeView",
-     *     summary="Display the home page",
-     *     tags={"Views"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Returns the home page view"
-     *     )
-     * )
-     */
-    public function displayHomeView()
-    {
-        return view('index');
-    }
-
     /**
      * @OA\Get(
      *     path="/displayBooksView",
@@ -121,10 +90,12 @@ class ViewController extends Controller
      */
     public function displayReturnView()
     {
-        $rentals = Rentals::where('returned', 0)
-            ->with(['user', 'books', 'movies'])
-            ->get();
-
+        $userId = Auth::id();
+        $rentals = Rentals::where('renter_id', $userId)
+                          ->where('returned', false)
+                          ->with(['books', 'movies'])
+                          ->get();
+    
         return view('returnItem', compact('rentals'));
     }
 }

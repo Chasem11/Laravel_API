@@ -68,7 +68,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'user_id';
 

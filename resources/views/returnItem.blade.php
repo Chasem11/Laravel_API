@@ -27,9 +27,9 @@
                                 @foreach($rentals as $rental)
                                     <option value="{{ $rental->rental_id }}">
                                         @if ($rental->book_id)
-                                            Book: {{ $rental->books->title }} - Rented by {{ $rental->user->first_name }} {{ $rental->user->last_name }}
+                                            Book: {{ $rental->books->title }}
                                         @elseif ($rental->movie_id)
-                                            Movie: {{ $rental->movies->title }} - Rented by {{ $rental->user->first_name }} {{ $rental->user->last_name }}
+                                            Movie: {{ $rental->movies->title }}
                                         @endif
                                     </option>
                                 @endforeach
