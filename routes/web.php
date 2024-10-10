@@ -32,6 +32,7 @@ Route::get('/displayReturnView', 'App\Http\Controllers\ViewController@displayRet
 
 Route::post('/createUser', 'App\Http\Controllers\GetRoutesController@createUser');
 Route::post('/login', 'App\Http\Controllers\AuthController@login');
+Route::post('/logout', 'App\Http\Controllers\GetRoutesController@logout');
 
 Route::post('/rentItem', 'App\Http\Controllers\ItemController@rentItem');
 Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');

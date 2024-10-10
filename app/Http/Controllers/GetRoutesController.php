@@ -273,6 +273,37 @@ class GetRoutesController extends Controller
 
         return response()->json(['token' => $token, 'user' => $user], 200);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/logout",
+     *     summary="User logout",
+     *     tags={"Authentication"},
+     *     description="Logs out the authenticated user and invalidates their session.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Logout successful")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated - user is not logged in"
+     *     ),
+     *     security={{ "bearerAuth": {} }}
+     * )
+     */
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login'); 
+    }
 }
 
 

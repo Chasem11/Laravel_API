@@ -26,7 +26,14 @@
             },
             body: JSON.stringify({ message: message })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(errorText => {
+                    throw new Error(`Error: ${response.status} - ${errorText}`);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             responseDiv.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
             document.getElementById('userMessage').value = '';  // Clear the input

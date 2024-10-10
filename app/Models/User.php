@@ -14,49 +14,67 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *     schema="User",
  *     type="object",
  *     title="User",
- *     description="User model",
+ *     description="User model representing an individual user in the system",
+ *     required={"user_id", "first_name", "last_name", "email", "user_type", "password"},
+ *     
  *     @OA\Property(
  *         property="user_id",
  *         type="integer",
- *         description="Unique identifier for the user"
+ *         description="Unique identifier for the user",
+ *         example=1
  *     ),
  *     @OA\Property(
  *         property="first_name",
  *         type="string",
- *         description="First name of the user"
+ *         description="First name of the user",
+ *         example="John"
  *     ),
  *     @OA\Property(
  *         property="last_name",
  *         type="string",
- *         description="Last name of the user"
+ *         description="Last name of the user",
+ *         example="Doe"
  *     ),
  *     @OA\Property(
  *         property="email",
  *         type="string",
  *         format="email",
- *         description="Email address of the user"
+ *         description="Email address of the user",
+ *         example="johndoe@example.com"
  *     ),
  *     @OA\Property(
  *         property="user_type",
  *         type="string",
- *         description="Type of user, either 'student' or 'teacher'"
+ *         enum={"student", "teacher"},
+ *         description="Type of user, either 'student' or 'teacher'",
+ *         example="student"
  *     ),
  *     @OA\Property(
  *         property="grade_level",
  *         type="integer",
  *         nullable=true,
- *         description="Grade level of the user (applicable if the user is a student)"
+ *         description="Grade level of the user (applicable only if the user is a student)",
+ *         example=10
  *     ),
  *     @OA\Property(
  *         property="department",
  *         type="string",
  *         nullable=true,
- *         description="Department of the user (applicable if the user is a teacher)"
+ *         description="Department of the user (applicable only if the user is a teacher)",
+ *         example="Mathematics"
  *     ),
  *     @OA\Property(
  *         property="gender",
  *         type="string",
- *         description="Gender of the user"
+ *         description="Gender of the user",
+ *         example="male"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         description="Password for the user's account",
+ *         example="securepassword123"
  *     ),
  *     @OA\Property(
  *         property="rentals",
@@ -66,6 +84,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *     )
  * )
  */
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

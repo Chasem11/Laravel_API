@@ -94,22 +94,60 @@ class ChatBotController extends Controller
     private function checkAvailabilityByTitle($message)
     {
         // Extract potential title from the message
-        $title = str_replace(['is', 'available', 'to rent', '?'], '', $message);
-        $title = trim($title);
+        $title = $this->extractTitle($message);
 
-        // Check in movies
+        // Check exact match in movies
         $movie = Movies::where('title', 'like', '%' . $title . '%')->where('availability', 1)->first();
         if ($movie) {
             return response()->json(['response' => "Yes, the movie '$movie->title' is available to rent."], 200);
         }
 
-        // Check in books
+        // Check exact match in books
         $book = Books::where('title', 'like', '%' . $title . '%')->where('availability', 1)->first();
         if ($book) {
             return response()->json(['response' => "Yes, the book '$book->title' is available to rent."], 200);
         }
 
-        return response()->json(['response' => "Sorry, '$title' is not available to rent at this time."], 200);
+        // No exact match found, try approximate match
+        $approximateMovie = $this->approximateTitleMatch($title, 'movies');
+        if ($approximateMovie) {
+            return response()->json(['response' => "Did you mean '$approximateMovie->title'? It is available to rent."], 200);
+        }
+
+        $approximateBook = $this->approximateTitleMatch($title, 'books');
+        if ($approximateBook) {
+            return response()->json(['response' => "Did you mean '$approximateBook->title'? It is available to rent."], 200);
+        }
+
+        return response()->json(['response' => "Sorry, we couldn't find an item close to '$title' available for rent at this time."], 200);
+    }
+
+    private function approximateTitleMatch($title, $type)
+    {
+        $model = $type === 'movies' ? Movies::class : Books::class;
+        $titles = $model::where('availability', 1)->pluck('title')->toArray();
+        $closestTitle = null;
+        $highestSimilarity = 0;
+
+        foreach ($titles as $itemTitle) {
+            similar_text($title, $itemTitle, $percent);
+            if ($percent > $highestSimilarity && $percent > 70) { // Adjust threshold as needed
+                $highestSimilarity = $percent;
+                $closestTitle = $itemTitle;
+            }
+        }
+
+        return $closestTitle ? $model::where('title', $closestTitle)->first() : null;
+    }
+
+    /**
+     * Helper function to extract a potential title from the user's message
+     */
+    private function extractTitle($message)
+    {
+        // Remove common filler words and clean the input for the title
+        $title = str_replace(['is', 'available', 'to rent', '?'], '', $message);
+        return trim($title);
     }
 
     private function containsAny($message, $keywords)
@@ -122,4 +160,3 @@ class ChatBotController extends Controller
         return false;
     }
 }
-

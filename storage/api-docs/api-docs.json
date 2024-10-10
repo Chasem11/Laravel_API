@@ -351,6 +351,42 @@
                 }
             }
         },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User logout",
+                "description": "Logs out the authenticated user and invalidates their session.",
+                "operationId": "e4354297f009b869b323c1e75395ab56",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout successful"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated - user is not logged in"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/rentItem": {
             "post": {
                 "tags": [
@@ -639,42 +675,68 @@
             },
             "User": {
                 "title": "User",
-                "description": "User model",
+                "description": "User model representing an individual user in the system",
+                "required": [
+                    "user_id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "user_type",
+                    "password"
+                ],
                 "properties": {
                     "user_id": {
                         "description": "Unique identifier for the user",
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
                     },
                     "first_name": {
                         "description": "First name of the user",
-                        "type": "string"
+                        "type": "string",
+                        "example": "John"
                     },
                     "last_name": {
                         "description": "Last name of the user",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Doe"
                     },
                     "email": {
                         "description": "Email address of the user",
                         "type": "string",
-                        "format": "email"
+                        "format": "email",
+                        "example": "johndoe@example.com"
                     },
                     "user_type": {
                         "description": "Type of user, either 'student' or 'teacher'",
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "student",
+                            "teacher"
+                        ],
+                        "example": "student"
                     },
                     "grade_level": {
-                        "description": "Grade level of the user (applicable if the user is a student)",
+                        "description": "Grade level of the user (applicable only if the user is a student)",
                         "type": "integer",
+                        "example": 10,
                         "nullable": true
                     },
                     "department": {
-                        "description": "Department of the user (applicable if the user is a teacher)",
+                        "description": "Department of the user (applicable only if the user is a teacher)",
                         "type": "string",
+                        "example": "Mathematics",
                         "nullable": true
                     },
                     "gender": {
                         "description": "Gender of the user",
-                        "type": "string"
+                        "type": "string",
+                        "example": "male"
+                    },
+                    "password": {
+                        "description": "Password for the user's account",
+                        "type": "string",
+                        "format": "password",
+                        "example": "securepassword123"
                     },
                     "rentals": {
                         "description": "List of rentals associated with the user",
