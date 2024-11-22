@@ -145,6 +145,30 @@ Here are the main routes in the application:
 | POST        | `/logout`            | User logout                                                              |
 | POST        | `/chatbot`           | Chatbot interaction for rental and item availability inquiries           |
 
+## API Documentation
+
+This project includes interactive API documentation with **Swagger**, providing a complete overview of available endpoints and data models.
+
+### Accessing Swagger Documentation
+
+After setting up and running the application:
+
+1. Open your browser and navigate to:
+`http://127.0.0.1:8000/api/documentation`
+
+2. Use the interactive UI to view all endpoints, send requests, and examine responses.
+
+### Key API Documentation Highlights
+- All available API routes are documented, with descriptions of request parameters, responses, and examples.
+- Schemas for each model (`User`, `Rental`, `Book`, `Movie`) are also included, showing data structure and required fields.
+- Easily test endpoints for:
+- **User registration** and **login**
+- **Viewing media** (books and movies)
+- **Renting and returning items**
+- **Chatbot queries** for item availability and due rentals
+
+This documentation makes it easy for developers and testers to explore and understand the API's functionality and data structures.
+
 
 ## Database Setup
 
