@@ -47,6 +47,8 @@ class Books extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'item_id',
         'title',

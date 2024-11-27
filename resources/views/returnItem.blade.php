@@ -10,6 +10,19 @@
 @include('navbar')
 
 <div class="container mt-5">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm">
@@ -21,11 +34,11 @@
                         @csrf
                         <!-- Rental Selection -->
                         <div class="mb-3">
-                            <label for="rental_id" class="form-label">Select Rental</label>
-                            <select name="rental_id" id="rental_id" class="form-select" required>
+                            <label for="id" class="form-label">Select Rental</label>
+                            <select name="id" id="id" class="form-select" required>
                                 <option value="" disabled selected>Select a rental</option>
                                 @foreach($rentals as $rental)
-                                    <option value="{{ $rental->rental_id }}">
+                                    <option value="{{ $rental->id }}">
                                         @if ($rental->book_id)
                                             Book: {{ $rental->books->title }}
                                         @elseif ($rental->movie_id)

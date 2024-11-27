@@ -1,0 +1,31 @@
+version: '3.8' #Docker compose version
+
+services: #Services in deployment
+  app:
+    build:
+      context: . #current directory
+      dockerfile: Dockerfile #Docker file to build the image
+    container_name: laravel_app
+    ports:
+      - "8000:8000" #Port mapping
+    volumes:
+      - .:/var/www/html #. for the current directory. /var/www/html directory where the container is hosted. Ensures local changes are reflected
+    depends_on:
+      - db #Ensures db is started before app
+
+  db:
+    image: mysql:8.0 #Docker Image to use
+    container_name: mysql_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql #named volume on the host. And the directory where the MYSQL data is stored even after container restart
+
+volumes:
+  dbdata: #defines the volume
+

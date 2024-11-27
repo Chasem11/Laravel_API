@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         '/createUser',
         '/login',
         '/logout',
+        'rentItem',
+        'returnItem'
     ];
 }

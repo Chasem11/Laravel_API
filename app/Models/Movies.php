@@ -47,6 +47,8 @@ use Illuminate\Database\Eloquent\Model;
 class Movies extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'item_id',

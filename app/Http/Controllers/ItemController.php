@@ -97,7 +97,7 @@ class ItemController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="rental_id", type="integer", description="Rental ID to return")
+     *             @OA\Property(property="id", type="integer", description="Rental ID to return")
      *         )
      *     ),
      *     @OA\Response(
@@ -114,15 +114,16 @@ class ItemController extends Controller
      *     )
      * )
      */
+
     public function returnItem(Request $request)
     {
         $request->validate([
-            'rental_id' => 'required|exists:rentals,rental_id',
+            'id' => 'required|exists:rentals,id', 
         ]);
 
         try {
             // Call the stored procedure to handle the return
-            DB::statement('CALL returnItem(?)', [$request->rental_id]);
+            DB::statement('CALL returnItem(?)', [$request->id]);
 
             // Redirect back to the return view with success message
             return redirect('displayReturnView')->with('success', 'Item returned successfully!');

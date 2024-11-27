@@ -468,7 +468,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "rental_id": {
+                                    "id": {
                                         "description": "Rental ID to return",
                                         "type": "integer"
                                     }
