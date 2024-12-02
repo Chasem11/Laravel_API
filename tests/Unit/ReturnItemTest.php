@@ -19,10 +19,10 @@ class ReturnItemTest extends TestCase
 
     public function test_return_item()
     {
-        $movie = Movies::factory()->create(['item_id' => 1, 'availability' => true]);
+        $movie = Movies::factory()->create(['item_id' => 1, 'availability' => false]);
 
         $rental = Rentals::factory()->create([
-            'movie_id' => $movie->movie_id,
+            'movie_id' => $movie->item_id,
             'returned' => false
         ]);
         
@@ -34,7 +34,7 @@ class ReturnItemTest extends TestCase
 
         $this->assertDatabaseHas('movies', [
             'item_id' => $movie->item_id,
-            'availability' => true,
+            'availability' => false,
         ]);
 
         \DB::statement('CALL returnItem(?)', [$rental->id]);
