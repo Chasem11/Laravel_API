@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -24,7 +25,8 @@ class UserFactory extends Factory
             'user_type' => $this->faker->randomElement(['student', 'teacher']),
             'grade_level' => $this->faker->optional()->numberBetween(9, 12),    
             'department' => $this->faker->optional()->word(),                   
-            'gender' => $this->faker->randomElement(['male', 'female'])
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'password' => Hash::make('testing123')
         ];
     }
 }

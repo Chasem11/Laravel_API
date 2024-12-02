@@ -55,6 +55,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rentals extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $fillable = [
         'renter_id',

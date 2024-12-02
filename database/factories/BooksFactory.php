@@ -3,6 +3,8 @@
 namespace Database\Factories;
 use App\Models\Books;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Generator as Faker;
+
 
 class BooksFactory extends Factory
 {

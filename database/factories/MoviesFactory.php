@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Movies;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Generator as Faker;
+
 
 class MoviesFactory extends Factory
 {
