@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+    Route::get('/users', 'App\Http\Controllers\GetRoutesController@getUsers');
+    Route::get('/books', 'App\Http\Controllers\GetRoutesController@getBooks');
+    Route::get('/rentals', 'App\Http\Controllers\GetRoutesController@getRentals');
+    Route::get('/movies', 'App\Http\Controllers\GetRoutesController@getMovies');
+    Route::get('/availableMovies', 'App\Http\Controllers\GetRoutesController@getAvailableMovies');
+    Route::get('/availableBooks', 'App\Http\Controllers\GetRoutesController@getAvailableBooks');
+    Route::get('/dueRentals', 'App\Http\Controllers\GetRoutesController@getDueRentals');
+    Route::post('/rentItem', 'App\Http\Controllers\ItemController@rentItem');
+    Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');
 });
