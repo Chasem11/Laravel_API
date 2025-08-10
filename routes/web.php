@@ -29,17 +29,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');
 });
 
-Route::get('/displayBooksView', 'App\Http\Controllers\ViewController@displayBookView');
-Route::get('/displayMoviesView', 'App\Http\Controllers\ViewController@displayMovieView');
-Route::get('/displayRentView', 'App\Http\Controllers\ViewController@displayRentView');
-Route::get('/displayReturnView', 'App\Http\Controllers\ViewController@displayReturnView');
-
-Route::post('/createUser', 'App\Http\Controllers\GetRoutesController@createUser');
-Route::post('/login', 'App\Http\Controllers\AuthController@login');
-Route::post('/logout', 'App\Http\Controllers\GetRoutesController@logout');
-
-
-Route::post('/chatbot', 'App\Http\Controllers\ChatBotController@chatbot');
-
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
