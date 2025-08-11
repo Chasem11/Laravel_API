@@ -22,8 +22,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('grade_level')->nullable(); 
             $table->string('department')->nullable();
             $table->string('gender')->nullable();
-            $table->string('password'); 
-            $table->rememberToken();   
+            $table->string('password');  
         });
     }
 
