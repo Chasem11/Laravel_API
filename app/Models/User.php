@@ -86,7 +86,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * )
  */
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
@@ -130,7 +130,7 @@ class User extends Authenticatable
         return $this->hasMany(Rentals::class, 'renter_id', 'user_id');
     }
 
-     /**
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
