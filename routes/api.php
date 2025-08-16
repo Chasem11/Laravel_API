@@ -14,6 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Auth Routes
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('getSession', 'AuthController@me');
+
+});
+
+
+
 Route::prefix('v1')->group(function () {
     Route::get('/users', 'App\Http\Controllers\GetRoutesController@getUsers');
     Route::get('/books', 'App\Http\Controllers\GetRoutesController@getBooks');
