@@ -16,6 +16,9 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next)
     {
+        if (auth()->user()->user_type !== $role) {
+            return response()->json(['error'=> 'Invalid Permission'], 403);
+        }
         return $next($request);
     }
 }
