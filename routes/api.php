@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GetRoutesController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,21 +24,26 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('login', 'App\Http\Controllers\AuthController@login');
-    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
-    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
-    Route::post('getSession', 'App\Http\Controllers\AuthController@getSession');
+    Route::post('/login', [AuthController::class,'login']);
+    Route::post('/logout', [AuthController::class,'logout']);
+    Route::post('/refresh', [AuthController::class,'refresh']);
+    Route::post('/getSession', [AuthController::class,'getSession']);
 
 });
 
-Route::prefix('v1')->group(function () {
-    Route::get('/users', 'App\Http\Controllers\GetRoutesController@getUsers');
-    Route::get('/books', 'App\Http\Controllers\GetRoutesController@getBooks');
-    Route::get('/rentals', 'App\Http\Controllers\GetRoutesController@getRentals');
-    Route::get('/movies', 'App\Http\Controllers\GetRoutesController@getMovies');
-    Route::get('/availableMovies', 'App\Http\Controllers\GetRoutesController@getAvailableMovies');
-    Route::get('/availableBooks', 'App\Http\Controllers\GetRoutesController@getAvailableBooks');
-    Route::get('/dueRentals', 'App\Http\Controllers\GetRoutesController@getDueRentals');
-    Route::post('/rentItem', 'App\Http\Controllers\ItemController@rentItem');
-    Route::post('/returnItem', 'App\Http\Controllers\ItemController@returnItem');
+Route::group([
+
+    'middleware' => ['api', 'auth:api'],
+    'prefix' => 'v1'
+
+], function ($router) {
+    Route::get('/users', [GetRoutesController::class,'getUsers']);
+    Route::get('/books', [GetRoutesController::class,'getBooks']);
+    Route::get('/rentals', [GetRoutesController::class,'getRentals']);
+    Route::get('/movies', [GetRoutesController::class,'getMovies']);
+    Route::get('/availableMovies', [GetRoutesController::class,'availableMovies']);
+    Route::get('/availableBooks', [GetRoutesController::class,'availbleBooks']);
+    Route::get('/dueRentals', [GetRoutesController::class,'getDueRentals']);
+    Route::post('/rentItem', [ItemController::class,'rentItem']);
+    Route::post('/returnItem', [ItemController::class,'returnItem']);
 });
