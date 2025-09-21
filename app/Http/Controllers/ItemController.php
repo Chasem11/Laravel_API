@@ -72,7 +72,7 @@ class ItemController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Item rented successfully!',
+                'message' => 'item rented successfully',
                 'rental_id' => $rental->id
             ]);
         } catch (\Exception $e) {
@@ -93,7 +93,7 @@ class ItemController extends Controller
             $rental = Rentals::findOrFail($validated['id']);
 
             if ($rental->returned) {
-                return response()->json(['success' => false, 'message' => 'Item already returned.'], 400);
+                return response()->json(['success' => false, 'message' => 'item already returned.'], 400);
             }
 
             DB::beginTransaction();
@@ -112,11 +112,11 @@ class ItemController extends Controller
 
             DB::commit();
 
-            return response()->json(['success' => true, 'message' => 'Item returned successfully!']);
+            return response()->json(['success' => true, 'message' => 'item returned successfully!']);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error returning item: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Error returning item: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'error returning item: ' . $e->getMessage()], 500);
         }
     }
 }

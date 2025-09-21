@@ -35,7 +35,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid Credentials'], 401);
+            return response()->json(['error' => 'invalid credentials'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -73,16 +73,16 @@ class AuthController extends Controller
 
             $token = auth()->login($user);
 
-            return $this->respondWithToken($token);
+            return $this->respondWithToken($token, ['message'=> 'registration successful']);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'error' => 'Validation failed',
+                'error' => 'validation failed',
                 'messages' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Registration failed',
+                'error' => 'registration failed',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -107,7 +107,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'successfully logged out']);
     }
 
     /**
@@ -127,12 +127,18 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $extra = [])
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+
+        if (!empty($extra)) {
+        $response = array_merge($response, $extra);
+        }
+
+        return response()->json($response);
     }
 }
