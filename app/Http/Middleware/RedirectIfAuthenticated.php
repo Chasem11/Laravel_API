@@ -19,6 +19,6 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-
+        return $next($request);
     }
 }
