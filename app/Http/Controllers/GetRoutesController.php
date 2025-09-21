@@ -40,7 +40,7 @@ class GetRoutesController extends Controller
      */
     public function getUsers() 
     {
-        $users = User::all();
+        $users = User::paginate(10);
         return response()->json($users);
     }
 
@@ -58,7 +58,7 @@ class GetRoutesController extends Controller
      */
     public function getBooks() 
     {
-        $books = Books::all();
+        $books = Books::paginate(10);
         return response()->json($books);
     }
 
@@ -76,7 +76,7 @@ class GetRoutesController extends Controller
      */
     public function getAvailableBooks()
     {
-        $books = Books::where('availability', 1)->get('title');
+        $books = Books::where('availability', 1)->paginate(10, ['title']);
         return response()->json($books);
     }
 
@@ -102,7 +102,7 @@ class GetRoutesController extends Controller
     public function getRentals(Request $request) 
     {
         $date = $request->input('date');
-        $rentals = Rentals::where('rental_date', '>=', Carbon::today()->subDays($date))->get();
+        $rentals = Rentals::where('rental_date', '>=', Carbon::today()->subDays($date))->paginate(10);
         return response()->json($rentals);
     }
 
@@ -120,7 +120,7 @@ class GetRoutesController extends Controller
      */
     public function getMovies()
     {
-        $movies = Movies::all();
+        $movies = Movies::paginate(10);
         return response()->json($movies);
     }
 
@@ -138,7 +138,7 @@ class GetRoutesController extends Controller
      */
     public function getAvailableMovies()
     {
-        $movies = Movies::where('availability', 1)->get('title');
+        $movies = Movies::where('availability', 1)->paginate(10, ['title']);
         return response()->json($movies);
     }
 
@@ -156,7 +156,10 @@ class GetRoutesController extends Controller
      */
     public function getDueRentals()
     {
-        $rentals = Rentals::where('returned', 0)->with('user:user_id,first_name,last_name', 'movies:item_id,title', 'books:item_id,title')->get();
+        $rentals = Rentals::where('returned', 0)
+            ->with('user:user_id,first_name,last_name', 'movies:item_id,title', 'books:item_id,title')
+            ->paginate(10);
+
         $returnMessage = [];
 
         foreach ($rentals as $rental) {
@@ -167,7 +170,14 @@ class GetRoutesController extends Controller
                 'movie_title' => $rental->movies ? $rental->movies->title : null
             ];
         }
-        return response()->json($returnMessage);
+        // Return paginated data with meta
+        return response()->json([
+            'data' => $returnMessage,
+            'current_page' => $rentals->currentPage(),
+            'last_page' => $rentals->lastPage(),
+            'per_page' => $rentals->perPage(),
+            'total' => $rentals->total(),
+        ]);
     }
 
     /**
