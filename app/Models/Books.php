@@ -48,6 +48,8 @@ class Books extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $primaryKey = 'item_id'; 
+    public $incrementing = true;
 
     protected $fillable = [
         'item_id',
