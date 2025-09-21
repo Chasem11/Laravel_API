@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -34,10 +35,57 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Invalid Credentials'], 401);
         }
 
         return $this->respondWithToken($token);
+    }
+
+    /**
+     * Register a new user and return a JWT.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        try {
+            $request->validate([
+                'first_name' => 'required|string|max:30',
+                'last_name' => 'required|string|max:30',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:8',
+                'user_type' => 'required|string',
+                'gender' => 'required|string',
+                'grade_level' => 'nullable|in:9,10,11,12|required_if:user_type,student',
+                'department' => 'nullable|string|max:255|required_if:user_type,teacher',
+            ]);
+
+            $user = User::create([
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'user_type' => $request->input('user_type'),
+                'grade_level' => $request->input('user_type') === 'student' ? $request->input('grade_level') : null,
+                'department' => $request->input('user_type') === 'teacher' ? $request->input('department') : null,
+                'gender' => $request->input('gender')
+            ]);
+
+            $token = auth()->login($user);
+
+            return $this->respondWithToken($token);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed',
+                'messages' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Registration failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
