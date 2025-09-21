@@ -47,3 +47,4 @@ Route::group([
     Route::get('/dueRentals', [GetRoutesController::class,'getDueRentals']);
     Route::post('/rentItem', [ItemController::class,'rentItem']);
     Route::post('/returnItem', [ItemController::class,'returnItem']);
+});
